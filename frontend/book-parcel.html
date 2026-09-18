@@ -1,0 +1,90 @@
+const pool = require("../config/db");
+
+// BOOK PARCEL
+exports.bookParcel = async (req, res) => {
+    try {
+        const {
+            sender_id,
+            receiver_name,
+            receiver_phone,
+            receiver_address,
+            parcel_type,
+            weight,
+            delivery_type,
+            amount,
+            delivery_city,
+            delivery_state,
+            delivery_pincode
+        } = req.body;
+
+        if (
+            !sender_id ||
+            !receiver_name ||
+            !receiver_phone ||
+            !receiver_address ||
+            !parcel_type ||
+            !weight ||
+            !delivery_type ||
+            !amount ||
+            !delivery_city ||
+            !delivery_state ||
+            !delivery_pincode
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Please provide all required details"
+            });
+        }
+
+        const trackingNumber = "CP" + Date.now();
+
+        const [result] = await pool.query(
+            `INSERT INTO parcels
+            (
+                tracking_number,
+                sender_id,
+                receiver_name,
+                receiver_phone,
+                delivery_address,
+                delivery_city,
+                delivery_state,
+                delivery_pincode,
+                parcel_type,
+                weight,
+                delivery_type,
+                delivery_charge
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                trackingNumber,
+                sender_id,
+                receiver_name,
+                receiver_phone,
+                receiver_address,
+                delivery_city,
+                delivery_state,
+                delivery_pincode,
+                parcel_type,
+                weight,
+                delivery_type,
+                amount
+            ]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: "Parcel booked successfully",
+            trackingNumber: trackingNumber,
+            parcel_id: result.insertId
+        });
+
+    } catch (error) {
+        console.error("BOOK PARCEL ERROR:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Parcel booking failed",
+            error: error.message
+        });
+    }
+};

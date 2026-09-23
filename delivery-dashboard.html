@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delivery Agent Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        /* HEADER */
+        .header {
+            background: #1f2937;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        /* MAIN */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        /* PROFILE CARD */
+        .profile-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .profile-card h3 {
+            margin-bottom: 20px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .info-box label {
+            display: block;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .info-box span {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* STATUS */
+        .status-available {
+            color: #16a34a;
+        }
+
+        /* PARCEL SECTION */
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .section h3 {
+            margin-bottom: 15px;
+        }
+
+        .empty-message {
+            background: #f8fafc;
+            padding: 25px;
+            text-align: center;
+            border-radius: 8px;
+            color: #666;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 700px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <h1>🚚 Courier Parcel</h1>
+
+        <button class="logout-btn" onclick="logout()">
+            Logout
+        </button>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <!-- WELCOME -->
+        <div class="welcome">
+
+            <h2>
+                Welcome, <span id="agentName">Delivery Agent</span> 👋
+            </h2>
+
+            <p>
+                Manage your assigned parcels and delivery tasks.
+            </p>
+
+        </div>
+
+
+        <!-- AGENT PROFILE -->
+        <div class="profile-card">
+
+            <h3>Delivery Agent Information</h3>
+
+            <div class="profile-grid">
+
+                <div class="info-box">
+                    <label>Employee Code</label>
+                    <span id="employeeCode">-</span>
+                </div>
+
+                <div class="info-box">
+                    <label>Phone</label>
+                    <span id="phone">-</span>
+                </div>
+
+                <div class="info-box">
+                    <label>Email</label>
+                    <span id="email">-</span>
+                </div>
+
+                <div class="info-box">
+                    <label>Vehicle Number</label>
+                    <span id="vehicleNumber">-</span>
+                </div>
+
+                <div class="info-box">
+                    <label>Vehicle Type</label>
+                    <span id="vehicleType">-</span>
+                </div>
+
+                <div class="info-box">
+                    <label>Availability</label>
+                    <span id="availability" class="status-available">
+                        Available
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ASSIGNED PARCELS -->
+        <div class="section">
+
+            <h3>📦 Assigned Parcels</h3>
+
+            <div class="empty-message">
+
+                <p>
+                    No parcels have been assigned yet.
+                </p>
+
+                <p style="margin-top: 8px;">
+                    Assigned deliveries will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        // ========================================
+        // LOAD DELIVERY AGENT
+        // ========================================
+
+        const deliveryAgent =
+            JSON.parse(localStorage.getItem("deliveryAgent"));
+
+
+        // ========================================
+        // CHECK LOGIN
+        // ========================================
+
+        if (!deliveryAgent) {
+
+            alert("Please login as a delivery agent.");
+
+            window.location.href = "delivery-login.html";
+
+        } else {
+
+            // Agent name
+            document.getElementById("agentName").textContent =
+                deliveryAgent.full_name || "Delivery Agent";
+
+
+            // Employee code
+            document.getElementById("employeeCode").textContent =
+                deliveryAgent.employee_code || "-";
+
+
+            // Phone
+            document.getElementById("phone").textContent =
+                deliveryAgent.phone || "-";
+
+
+            // Email
+            document.getElementById("email").textContent =
+                deliveryAgent.email || "-";
+
+
+            // Vehicle number
+            document.getElementById("vehicleNumber").textContent =
+                deliveryAgent.vehicle_number || "-";
+
+
+            // Vehicle type
+            document.getElementById("vehicleType").textContent =
+                deliveryAgent.vehicle_type || "-";
+
+
+            // Availability
+            document.getElementById("availability").textContent =
+                deliveryAgent.availability_status || "Available";
+        }
+
+
+        // ========================================
+        // LOGOUT
+        // ========================================
+
+        function logout() {
+
+            localStorage.removeItem("deliveryAgent");
+
+            window.location.href = "delivery-login.html";
+
+        }
+
+    </script>
+
+</body>
+</html>

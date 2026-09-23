@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Select Role - Courier Parcel</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7ff;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+
+            background: white;
+
+            padding: 45px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.12);
+
+            text-align: center;
+        }
+
+        h1 {
+            color: #3949db;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 35px;
+        }
+
+        .role-btn {
+            display: block;
+
+            width: 100%;
+
+            padding: 20px;
+
+            margin: 20px 0;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .user {
+            background: #eaf0ff;
+            color: #3949db;
+        }
+
+        .agent {
+            background: #fff1e6;
+            color: #e67e22;
+        }
+
+        .role-btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .back {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            color: #555;
+
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Welcome to Courier Parcel</h1>
+
+        <p class="subtitle">
+            How would you like to continue?
+        </p>
+
+        <a href="login.html" class="role-btn user">
+            👤 USER
+        </a>
+
+        <a href="delivery-login.html" class="role-btn agent">
+            🚚 DELIVERY AGENT
+        </a>
+
+        <a href="index.html" class="back">
+            ← Back
+        </a>
+
+    </div>
+
+</body>
+
+</html>

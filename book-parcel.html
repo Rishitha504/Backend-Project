@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Parcel - Courier Parcel</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .booking-container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            background: #4f5eea;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3949c7;
+        }
+
+        .back {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="booking-container">
+
+    <h1>Book Parcel</h1>
+
+    <form id="bookingForm">
+
+        <div class="form-group">
+            <label for="receiverName">Receiver Name</label>
+            <input
+                type="text"
+                id="receiverName"
+                placeholder="Enter receiver name"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="receiverPhone">Receiver Phone</label>
+            <input
+                type="tel"
+                id="receiverPhone"
+                placeholder="Enter receiver phone"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="receiverAddress">Receiver Address</label>
+            <textarea
+                id="receiverAddress"
+                placeholder="Enter receiver address"
+                required
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="parcelType">Parcel Type</label>
+            <select id="parcelType" required>
+                <option value="">Select parcel type</option>
+                <option value="Document">Document</option>
+                <option value="Package">Package</option>
+                <option value="Fragile">Fragile</option>
+                <option value="Electronics">Electronics</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="weight">Weight (kg)</label>
+            <input
+                type="number"
+                id="weight"
+                step="0.01"
+                min="0.01"
+                placeholder="Enter weight"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="deliveryType">Delivery Type</label>
+            <select id="deliveryType" required>
+                <option value="">Select delivery type</option>
+                <option value="Standard">Standard</option>
+                <option value="Express">Express</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Delivery Charge</label>
+            <input
+                type="number"
+                id="amount"
+                step="0.01"
+                min="0"
+                placeholder="Enter delivery charge"
+                required
+            >
+        </div>
+
+        <button type="submit">
+            Book Parcel
+        </button>
+
+    </form>
+
+    <a class="back" href="dashboard.html">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+<script src="js/booking.js"></script>
+
+</body>
+</html>

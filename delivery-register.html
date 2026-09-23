@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delivery Agent Registration</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Delivery Agent Registration</h2>
+
+        <form id="deliveryRegisterForm">
+
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+
+                <input
+                    type="text"
+                    id="fullName"
+                    placeholder="Enter full name"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter phone number"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="email">Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter email"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Create password"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="vehicleType">Vehicle Type</label>
+
+                <select id="vehicleType" required>
+
+                    <option value="">Select vehicle</option>
+
+                    <option value="Bike">Bike</option>
+
+                    <option value="Scooter">Scooter</option>
+
+                    <option value="Car">Car</option>
+
+                    <option value="Van">Van</option>
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="vehicleNumber">Vehicle Number</label>
+
+                <input
+                    type="text"
+                    id="vehicleNumber"
+                    placeholder="Example: TS09AB1234"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="address">Address</label>
+
+                <textarea
+                    id="address"
+                    placeholder="Enter your address"
+                    required
+                ></textarea>
+            </div>
+
+
+            <button type="submit">
+                Register as Delivery Agent
+            </button>
+
+        </form>
+
+
+        <p>
+            Already registered?
+            <a href="delivery-login.html">
+                Login here
+            </a>
+        </p>
+
+    </div>
+
+
+    <script src="js/delivery-register.js"></script>
+
+</body>
+
+</html>

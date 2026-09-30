@@ -1,0 +1,343 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Parcel Tracking | Courier Parcel</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #253047;
+            padding: 25px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 35px auto;
+        }
+
+        .header {
+            background: #35216e;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            line-height: 1.5;
+        }
+
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 18px #202b4410;
+        }
+
+        .panel h2 {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #6038c5;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 7px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4926a4;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #6038c5;
+            text-decoration: none;
+        }
+
+        #message {
+            margin-top: 15px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .error {
+            color: #b42318;
+        }
+
+        .success {
+            color: #16723a;
+        }
+
+        #result {
+            margin-top: 18px;
+        }
+
+        .result-row {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f8fafc;
+            border-radius: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .result-row strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #49309a;
+        }
+
+        .result-row span {
+            white-space: pre-wrap;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                margin-top: 15px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+
+        <a class="back-link" href="admin-dashboard.html">
+            ← Back to Admin Dashboard
+        </a>
+
+        <header class="header">
+            <h1>📦 Parcel Tracking</h1>
+            <p>Courier Parcel Management System</p>
+            <p>Enter your parcel tracking number to check its status.</p>
+        </header>
+
+        <section class="panel">
+            <h2>Track Your Parcel</h2>
+
+            <form id="trackingForm">
+                <label for="trackingNumber">
+                    Tracking Number
+                </label>
+
+                <input
+                    type="text"
+                    id="trackingNumber"
+                    placeholder="Enter tracking number"
+                    autocomplete="off"
+                    required
+                >
+
+                <button type="submit" id="trackButton">
+                    Track Parcel
+                </button>
+            </form>
+
+            <p id="message" aria-live="polite"></p>
+        </section>
+
+        <section class="panel hidden" id="resultPanel">
+            <h2>Tracking Details</h2>
+            <div id="result"></div>
+        </section>
+
+    </main>
+
+    <script>
+        const form = document.getElementById("trackingForm");
+        const input = document.getElementById("trackingNumber");
+        const message = document.getElementById("message");
+        const resultPanel = document.getElementById("resultPanel");
+        const result = document.getElementById("result");
+        const trackButton = document.getElementById("trackButton");
+
+        // Display returned information without inserting HTML from the API.
+        function displayValue(value) {
+            if (value === null) return "None";
+            if (value === undefined) return "-";
+
+            if (typeof value === "object") {
+                return JSON.stringify(value, null, 2);
+            }
+
+            return String(value);
+        }
+
+        function showResult(data) {
+            result.replaceChildren();
+
+            // Support common API response formats.
+            const parcel =
+                data && data.data !== undefined
+                    ? data.data
+                    : data;
+
+            if (
+                parcel === null ||
+                parcel === undefined ||
+                parcel === false ||
+                (Array.isArray(parcel) && parcel.length === 0)
+            ) {
+                message.textContent =
+                    "No parcel information was returned.";
+                message.className = "error";
+                resultPanel.classList.add("hidden");
+                return;
+            }
+
+            const items = Array.isArray(parcel) ? parcel : [parcel];
+
+            items.forEach((item) => {
+                if (item === null || typeof item !== "object") {
+                    const row = document.createElement("div");
+                    row.className = "result-row";
+                    row.textContent = displayValue(item);
+                    result.appendChild(row);
+                    return;
+                }
+
+                Object.entries(item).forEach(([key, value]) => {
+                    const row = document.createElement("div");
+                    row.className = "result-row";
+
+                    const label = document.createElement("strong");
+                    label.textContent = key
+                        .replace(/_/g, " ")
+                        .replace(/\b\w/g, char => char.toUpperCase());
+
+                    const content = document.createElement("span");
+                    content.textContent = displayValue(value);
+
+                    row.append(label, content);
+                    result.appendChild(row);
+                });
+            });
+
+            resultPanel.classList.remove("hidden");
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const trackingNumber = input.value.trim();
+
+            if (!trackingNumber) {
+                message.textContent =
+                    "Please enter a tracking number.";
+                message.className = "error";
+                return;
+            }
+
+            message.textContent = "Searching for your parcel...";
+            message.className = "";
+            resultPanel.classList.add("hidden");
+            result.replaceChildren();
+            trackButton.disabled = true;
+
+            try {
+                const response = await fetch(
+                    "http://localhost:5000/api/tracking/" +
+                    encodeURIComponent(trackingNumber)
+                );
+
+                let data;
+
+                try {
+                    data = await response.json();
+                } catch {
+                    throw new Error(
+                        "The server returned an unreadable response."
+                    );
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        data.error ||
+                        "Tracking request failed (HTTP " +
+                        response.status + ")."
+                    );
+                }
+
+                if (data.success === false) {
+                    throw new Error(
+                        data.message || "Parcel tracking failed."
+                    );
+                }
+
+                showResult(data);
+
+                if (!resultPanel.classList.contains("hidden")) {
+                    message.textContent =
+                        "Tracking information received.";
+                    message.className = "success";
+                }
+
+            } catch (error) {
+                message.textContent =
+                    error.message ||
+                    "Could not connect to the tracking service.";
+
+                message.className = "error";
+                resultPanel.classList.add("hidden");
+
+            } finally {
+                trackButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
+```
